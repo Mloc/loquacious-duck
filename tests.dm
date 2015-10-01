@@ -1,18 +1,21 @@
-TEST(sanity)
-	CHECK_EQUAL(1, 1)
-	CHECK_EQUAL(1, -(-1))
-	CHECK_EQUAL("abc", "abc")
-	CHECK_EQUAL("ab" + "cd", "abcd")
-	CHECK_LIST_EQUAL(list(1, 2, 2, 3), list(1, 2, 2, 3))
-
-DEFINE_FIXTURE(sanity)
-	var/a = "b"
-
-	fixture_setup()
-		a = "c"
+SUITE(BYONDSanity)
+	TEST(Basic)
+		CHECK_EQUAL(1, 1)
+		CHECK_EQUAL(1, -(-1))
+		CHECK_EQUAL("abc", "abc")
+		CHECK_EQUAL("ab" + "cd", "abcd")
+		CHECK_LIST_EQUAL(list(1, 2, 3), list(1, 2, 3) | list(2, 3))
 	
-	fixture_destroy()
-		world.log << "destroying"
+	TEST(FloatRounding)
+		CHECK_EQUAL(1, 1.00000001)
+		CHECK_EQUAL(10, 10.0000001)
+		CHECK_EQUAL(83886008, 83886009)
+	
+	DEFINE_FIXTURE(ReflectionFixture)
+		proc/reflect_target(msg)
+			return "REFLECT: [msg]"
 
-TEST_FIXTURE(sanity, fixsanity)
-	CHECK_EQUAL("a", a)
+		var/data = "abcdef"
+	
+	TEST_FIXTURE(ReflectionFixture, Reflection)
+		CHECK_EQUAL("REFLECT: abcdef", call(src, "reflect_target")(vars["data"]))
