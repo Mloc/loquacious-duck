@@ -50,7 +50,6 @@ retval=$?
 mv $dmepath.mdme.dmb $dmepath.dmb
 mv $dmepath.mdme.rsc $dmepath.rsc
 
-#rm $dmepath.mdme
+rm $dmepath.mdme
 
 exit $retval
-
