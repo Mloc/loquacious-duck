@@ -40,7 +40,7 @@
 	if(!__compare_lists(list_a, list_b)) {__DMUT_FAIL("'" + #list_a + "' is not equal to '" + #list_b + "'")}
 
 // `do {...} while(0)` opens a new, breakable scope
-#define CHECK_THROW(expression, exception_type) \
+#define CHECK_THROW(exception_type, expression) \
 	do { \
 		try {expression}; \
 		catch(var/exception/e) { \
