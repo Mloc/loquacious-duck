@@ -7,7 +7,7 @@
 	populate_tests()
 
 /datum/dmut_manager/proc/dmut_log(msg)
-	world.log << msg
+	world.log << "## DMUT: [msg]"
 
 /datum/dmut_manager/proc/populate_tests()
 	tests_by_suite = list()
@@ -59,16 +59,27 @@
 
 		if(ret_val)
 			fail_count++
-			if(0) {CRASH("what?")} //create a new scope and discard to work around a really fucking weird byond bug
-			dmut_log("[liason.file]:[liason.line]: error: Test failure in [test.__name]: [liason.name]")
+			if(0) {CRASH("what?")} //this is required to work around a codegen bug in 508 and below, fixed in 509.1303 beta.
+			dmut_log("[liason.file]:[liason.line]: error: Test failure in [test.__suite]/[test.__name]: [liason.name]")
 
 	if(fail_count == 0)
-		dmut_log("[suite]: PASSING ([tests.len] test\s passed)")
+		dmut_log("SUITE: [suite]: PASSING ([tests.len] test\s passed)")
 	else
-		dmut_log("[suite]: FAILING ([fail_count] out of [tests.len] tests failed)")
+		dmut_log("SUITE: [suite]: FAILING ([fail_count] out of [tests.len] tests failed)")
 
 	return fail_count
 
 /datum/dmut_manager/proc/run_tests()
+	var/failed_tests
+	var/failed_suites
+
 	for(var/suite in tests_by_suite)
-		test_suite(suite)
+		var/failed = test_suite(suite)
+		failed_tests += failed
+		failed_suites += !!failed
+	
+	dmut_log("[failed_suites] out of [tests_by_suite.len] test suites failed ([failed_tests] test failure\s)")
+	if(!failed_suites)
+		dmut_log("RESULT: PASSING")
+	else
+		dmut_log("RESULT: FAILING")

@@ -5,6 +5,8 @@
 	var/__suite = "Default"
 
 	proc/run_test(liason)
+
+	// should probably be a global library helper
 	proc/__compare_lists(list/a, list/b)
 		if(a.len != b.len) return 0
 		if(a.len == 0) return 1

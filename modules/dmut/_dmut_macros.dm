@@ -1,4 +1,4 @@
-// internal macros
+// ## internal macros
 #define __DMUT_CREATESCOPE(test_name, test_path) \
 	dmut/test_path { \
 		__structural = 0; \
@@ -12,7 +12,7 @@
 	return 1
 
 
-// definition macros
+// ## definition macros
 #define SUITE(suite_name) \
 	dmut/__suite/suite_name {__suite = #suite_name}; \
 	dmut/__suite/suite_name
@@ -23,12 +23,12 @@
 #define TEST_FIXTURE(fixture_name, test_name) \
 	__DMUT_CREATESCOPE(test_name, __fixture/fixture_name/test_name)
 
-#define DEFINE_FIXTURE(fixture_name) \
+#define FIXTURE(fixture_name) \
 	dmut/__fixture/fixture_name {__fixture = #fixture_name}; \
 	dmut/__fixture/fixture_name
 
 
-// checking macros
+// ## assertion macros
 #define CHECK(expression) \
 	if(!(expression)) {__DMUT_FAIL("assertion '" + #expression + "' failed")}
 
