@@ -1,6 +1,4 @@
 #define DEBUG
-#include "modules/dmut/_dmut_macros.dm"
-#include "modules/dmut/dmut_definition.dm"
-#include "modules/dmut/dmut_manager.dm"
+#include "package.dm"
 #include "test.dm"
 #include "tests.dm"
